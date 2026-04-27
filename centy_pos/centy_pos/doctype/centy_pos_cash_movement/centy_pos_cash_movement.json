@@ -1,0 +1,199 @@
+{
+	"actions": [],
+	"allow_rename": 0,
+	"autoname": "naming_series:",
+	"creation": "2026-04-24 12:00:00",
+	"doctype": "DocType",
+	"engine": "InnoDB",
+	"field_order": [
+		"naming_series",
+		"pos_opening_entry",
+		"pos_profile",
+		"company",
+		"cashier",
+		"movement_type",
+		"amount",
+		"mode_of_payment",
+		"reason",
+		"approved_by",
+		"reference_document",
+		"client_request_id",
+		"amended_from"
+	],
+	"fields": [
+		{
+			"fieldname": "naming_series",
+			"fieldtype": "Select",
+			"label": "Series",
+			"options": "CPM-.YYYY.-\n",
+			"reqd": 1,
+			"set_only_once": 1
+		},
+		{
+			"fieldname": "pos_opening_entry",
+			"fieldtype": "Link",
+			"in_list_view": 1,
+			"label": "POS Opening Entry",
+			"link_filters": "[[\"POS Opening Entry\",\"docstatus\",\"=\",1],[\"POS Opening Entry\",\"status\",\"=\",\"Open\"]]",
+			"options": "POS Opening Entry",
+			"reqd": 1,
+			"search_index": 1
+		},
+		{
+			"fetch_from": "pos_opening_entry.pos_profile",
+			"fieldname": "pos_profile",
+			"fieldtype": "Link",
+			"label": "POS Profile",
+			"options": "POS Profile",
+			"read_only": 1
+		},
+		{
+			"fetch_from": "pos_opening_entry.company",
+			"fieldname": "company",
+			"fieldtype": "Link",
+			"label": "Company",
+			"options": "Company",
+			"read_only": 1
+		},
+		{
+			"fetch_from": "pos_opening_entry.user",
+			"fieldname": "cashier",
+			"fieldtype": "Link",
+			"label": "Cashier",
+			"options": "User",
+			"read_only": 1
+		},
+		{
+			"fieldname": "movement_type",
+			"fieldtype": "Select",
+			"in_list_view": 1,
+			"label": "Movement Type",
+			"options": "Pay In\nPay Out",
+			"reqd": 1
+		},
+		{
+			"fieldname": "amount",
+			"fieldtype": "Currency",
+			"in_list_view": 1,
+			"label": "Amount",
+			"non_negative": 1,
+			"reqd": 1
+		},
+		{
+			"default": "Cash",
+			"fieldname": "mode_of_payment",
+			"fieldtype": "Link",
+			"label": "Mode of Payment",
+			"options": "Mode of Payment",
+			"reqd": 1
+		},
+		{
+			"fieldname": "reason",
+			"fieldtype": "Small Text",
+			"label": "Reason",
+			"reqd": 1
+		},
+		{
+			"fieldname": "approved_by",
+			"fieldtype": "Link",
+			"label": "Approved By",
+			"options": "User"
+		},
+		{
+			"fieldname": "reference_document",
+			"fieldtype": "Attach",
+			"label": "Reference"
+		},
+		{
+			"fieldname": "client_request_id",
+			"fieldtype": "Data",
+			"label": "Client Request ID",
+			"no_copy": 1,
+			"unique": 1
+		},
+		{
+			"fieldname": "amended_from",
+			"fieldtype": "Link",
+			"label": "Amended From",
+			"no_copy": 1,
+			"options": "Centy POS Cash Movement",
+			"print_hide": 1,
+			"read_only": 1
+		}
+	],
+	"is_submittable": 1,
+	"links": [],
+	"modified": "2026-04-24 12:00:00",
+	"modified_by": "Administrator",
+	"module": "Centy POS",
+	"name": "Centy POS Cash Movement",
+	"naming_rule": "By \"Naming Series\" field",
+	"owner": "Administrator",
+	"permissions": [
+		{
+			"amend": 0,
+			"cancel": 0,
+			"create": 1,
+			"delete": 0,
+			"email": 1,
+			"export": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "Centy POS Cashier",
+			"share": 0,
+			"submit": 1,
+			"write": 1
+		},
+		{
+			"amend": 1,
+			"cancel": 1,
+			"create": 1,
+			"delete": 0,
+			"email": 1,
+			"export": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "Centy POS Supervisor",
+			"share": 1,
+			"submit": 1,
+			"write": 1
+		},
+		{
+			"amend": 1,
+			"cancel": 1,
+			"create": 1,
+			"delete": 1,
+			"email": 1,
+			"export": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "Centy POS Manager",
+			"share": 1,
+			"submit": 1,
+			"write": 1
+		},
+		{
+			"create": 1,
+			"delete": 1,
+			"email": 1,
+			"export": 1,
+			"import": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "System Manager",
+			"share": 1,
+			"submit": 1,
+			"write": 1,
+			"cancel": 1,
+			"amend": 1
+		}
+	],
+	"sort_field": "modified",
+	"sort_order": "DESC",
+	"states": [],
+	"track_changes": 1
+}

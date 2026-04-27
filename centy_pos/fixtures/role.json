@@ -1,0 +1,22 @@
+[
+	{
+		"doctype": "Role",
+		"role_name": "Centy POS Cashier",
+		"desk_access": 1
+	},
+	{
+		"doctype": "Role",
+		"role_name": "Centy POS Supervisor",
+		"desk_access": 1
+	},
+	{
+		"doctype": "Role",
+		"role_name": "Centy POS Manager",
+		"desk_access": 1
+	},
+	{
+		"doctype": "Role",
+		"role_name": "Centy POS Pharmacist",
+		"desk_access": 1
+	}
+]

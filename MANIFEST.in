@@ -1,0 +1,8 @@
+recursive-include centy_pos *.csv
+recursive-include centy_pos *.json
+recursive-include centy_pos *.py
+recursive-include centy_pos *.txt
+recursive-include centy_pos *.md
+recursive-include centy_pos *.xml
+recursive-include centy_pos *.css
+recursive-include centy_pos *.js

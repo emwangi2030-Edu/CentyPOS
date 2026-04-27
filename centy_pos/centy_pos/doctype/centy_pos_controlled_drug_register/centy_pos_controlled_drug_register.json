@@ -1,0 +1,261 @@
+{
+	"actions": [],
+	"allow_rename": 0,
+	"autoname": "naming_series:",
+	"creation": "2026-04-24 12:00:00",
+	"doctype": "DocType",
+	"engine": "InnoDB",
+	"field_order": [
+		"naming_series",
+		"dispense_date",
+		"pos_invoice",
+		"pos_invoice_item",
+		"item",
+		"drug_schedule",
+		"batch_no",
+		"quantity_dispensed",
+		"uom",
+		"customer",
+		"patient_name",
+		"patient_id_type",
+		"patient_id_number",
+		"prescriber_name",
+		"prescriber_reg_number",
+		"prescription_number",
+		"dispensing_pharmacist",
+		"pharmacist_reg_number",
+		"pos_profile",
+		"notes",
+		"amended_from"
+	],
+	"fields": [
+		{
+			"fieldname": "naming_series",
+			"fieldtype": "Select",
+			"label": "Series",
+			"options": "CDR-.YYYY.-\n",
+			"reqd": 1,
+			"set_only_once": 1
+		},
+		{
+			"default": "now",
+			"fieldname": "dispense_date",
+			"fieldtype": "Datetime",
+			"in_list_view": 1,
+			"label": "Dispense Date",
+			"reqd": 1
+		},
+		{
+			"fieldname": "pos_invoice",
+			"fieldtype": "Link",
+			"in_list_view": 1,
+			"label": "POS Invoice",
+			"options": "POS Invoice",
+			"reqd": 1,
+			"search_index": 1
+		},
+		{
+			"fieldname": "pos_invoice_item",
+			"fieldtype": "Data",
+			"label": "POS Invoice Item Row",
+			"reqd": 1
+		},
+		{
+			"fieldname": "item",
+			"fieldtype": "Link",
+			"in_list_view": 1,
+			"label": "Item",
+			"link_filters": "[[\"Item\",\"centy_pos_is_controlled_drug\",\"=\",1]]",
+			"options": "Item",
+			"reqd": 1
+		},
+		{
+			"fetch_from": "item.centy_pos_drug_schedule",
+			"fieldname": "drug_schedule",
+			"fieldtype": "Select",
+			"label": "Schedule",
+			"options": "II\nIII\nIV",
+			"read_only": 1
+		},
+		{
+			"fieldname": "batch_no",
+			"fieldtype": "Link",
+			"label": "Batch No",
+			"options": "Batch",
+			"reqd": 1
+		},
+		{
+			"fieldname": "quantity_dispensed",
+			"fieldtype": "Float",
+			"label": "Quantity Dispensed",
+			"non_negative": 1,
+			"reqd": 1
+		},
+		{
+			"fetch_from": "item.stock_uom",
+			"fieldname": "uom",
+			"fieldtype": "Link",
+			"label": "UOM",
+			"options": "UOM",
+			"read_only": 1
+		},
+		{
+			"fieldname": "customer",
+			"fieldtype": "Link",
+			"in_list_view": 1,
+			"label": "Customer",
+			"options": "Customer",
+			"reqd": 1
+		},
+		{
+			"fieldname": "patient_name",
+			"fieldtype": "Data",
+			"label": "Patient Name",
+			"reqd": 1
+		},
+		{
+			"fieldname": "patient_id_type",
+			"fieldtype": "Select",
+			"label": "Patient ID Type",
+			"options": "National ID\nPassport\nAlien ID\nBirth Cert"
+		},
+		{
+			"fieldname": "patient_id_number",
+			"fieldtype": "Data",
+			"label": "Patient ID Number",
+			"reqd": 1
+		},
+		{
+			"fieldname": "prescriber_name",
+			"fieldtype": "Data",
+			"label": "Prescriber Name",
+			"reqd": 1
+		},
+		{
+			"fieldname": "prescriber_reg_number",
+			"fieldtype": "Data",
+			"label": "Prescriber Reg No"
+		},
+		{
+			"fieldname": "prescription_number",
+			"fieldtype": "Data",
+			"label": "Prescription Number"
+		},
+		{
+			"fieldname": "dispensing_pharmacist",
+			"fieldtype": "Link",
+			"label": "Dispensing Pharmacist",
+			"options": "Employee",
+			"reqd": 1
+		},
+		{
+			"fetch_from": "dispensing_pharmacist.centy_pos_pharmacist_reg_number",
+			"fieldname": "pharmacist_reg_number",
+			"fieldtype": "Data",
+			"label": "Pharmacist Reg No",
+			"read_only": 1
+		},
+		{
+			"fieldname": "pos_profile",
+			"fieldtype": "Link",
+			"label": "POS Profile",
+			"options": "POS Profile"
+		},
+		{
+			"fieldname": "notes",
+			"fieldtype": "Text",
+			"label": "Notes"
+		},
+		{
+			"fieldname": "amended_from",
+			"fieldtype": "Link",
+			"label": "Amended From",
+			"no_copy": 1,
+			"options": "Centy POS Controlled Drug Register",
+			"print_hide": 1,
+			"read_only": 1
+		}
+	],
+	"is_submittable": 1,
+	"links": [],
+	"modified": "2026-04-24 12:00:00",
+	"modified_by": "Administrator",
+	"module": "Centy POS",
+	"name": "Centy POS Controlled Drug Register",
+	"naming_rule": "By \"Naming Series\" field",
+	"owner": "Administrator",
+	"permissions": [
+		{
+			"create": 0,
+			"delete": 0,
+			"email": 1,
+			"export": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "Centy POS Cashier",
+			"write": 0
+		},
+		{
+			"create": 0,
+			"delete": 0,
+			"email": 1,
+			"export": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "Centy POS Supervisor",
+			"write": 0
+		},
+		{
+			"amend": 1,
+			"cancel": 1,
+			"create": 1,
+			"delete": 0,
+			"email": 1,
+			"export": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "Centy POS Manager",
+			"share": 1,
+			"submit": 1,
+			"write": 1
+		},
+		{
+			"amend": 1,
+			"cancel": 0,
+			"create": 1,
+			"delete": 0,
+			"email": 1,
+			"export": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "Centy POS Pharmacist",
+			"share": 0,
+			"submit": 1,
+			"write": 1
+		},
+		{
+			"amend": 1,
+			"cancel": 1,
+			"create": 1,
+			"delete": 1,
+			"email": 1,
+			"export": 1,
+			"import": 1,
+			"print": 1,
+			"read": 1,
+			"report": 1,
+			"role": "System Manager",
+			"share": 1,
+			"submit": 1,
+			"write": 1
+		}
+	],
+	"sort_field": "modified",
+	"sort_order": "DESC",
+	"states": [],
+	"track_changes": 1
+}

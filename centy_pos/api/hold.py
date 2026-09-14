@@ -55,15 +55,25 @@ def save_hold(
 @frappe.whitelist()
 def list_held(pos_opening_entry: str) -> list[dict]:
 	opening = frappe.get_doc("POS Opening Entry", pos_opening_entry)
+	# Hub cashiers authenticate through a shared ERP API user. Invoice `owner` is
+	# that API user, while POS Opening Entry.user is the till cashier — filtering
+	# on owner hid every hold and made Resume look broken.
 	rows = frappe.get_all(
 		"POS Invoice",
 		filters={
 			"pos_profile": opening.pos_profile,
-			"owner": opening.user,
 			"docstatus": 0,
 			"centy_pos_on_hold": 1,
 		},
-		fields=["name", "customer", "customer_name", "grand_total", "centy_pos_hold_reason", "centy_pos_hold_saved_at"],
+		fields=[
+			"name",
+			"customer",
+			"customer_name",
+			"grand_total",
+			"centy_pos_hold_reason",
+			"centy_pos_hold_saved_at",
+			"centy_pos_client_request_id",
+		],
 		order_by="modified desc",
 	)
 	out = []
@@ -77,6 +87,7 @@ def list_held(pos_opening_entry: str) -> list[dict]:
 				"grand_total": float(r.grand_total or 0),
 				"hold_reason": r.centy_pos_hold_reason,
 				"saved_at": str(r.centy_pos_hold_saved_at) if r.centy_pos_hold_saved_at else None,
+				"client_request_id": r.centy_pos_client_request_id,
 				"items_count": cnt,
 			}
 		)
@@ -116,6 +127,7 @@ def resume_hold(pos_invoice: str) -> dict:
 		"items": items,
 		"payments": payments,
 		"grand_total": float(inv.grand_total or 0),
+		"client_request_id": inv.centy_pos_client_request_id,
 	}
 
 

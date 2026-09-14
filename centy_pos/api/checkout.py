@@ -117,6 +117,7 @@ def submit_invoice(
 		invoice = frappe.get_doc("POS Invoice", draft_name)
 		invoice.set("items", [])
 		invoice.set("payments", [])
+		invoice.centy_pos_on_hold = 0
 	else:
 		invoice = frappe.new_doc("POS Invoice")
 		invoice.centy_pos_client_request_id = client_request_id

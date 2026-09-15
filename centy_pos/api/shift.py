@@ -123,16 +123,35 @@ def close_shift(pos_opening_entry: str, closing_balances: list, client_request_i
 	from erpnext.accounts.doctype.pos_closing_entry.pos_closing_entry import make_closing_entry_from_opening
 
 	opening = frappe.get_doc("POS Opening Entry", pos_opening_entry)
+	stale_close = (opening.get("pos_closing_entry") or "").strip()
+	if stale_close and not frappe.db.exists("POS Closing Entry", stale_close):
+		# Tony 15 Sep: close looked up POS-CLO-… that had been cancelled/deleted.
+		opening.db_set("pos_closing_entry", None, update_modified=False)
+		opening.pos_closing_entry = None
+
 	draft_name = frappe.db.get_value(
 		"POS Closing Entry",
 		{"centy_pos_client_request_id": client_request_id, "docstatus": 0},
 		"name",
 	)
+	if draft_name and not frappe.db.exists("POS Closing Entry", draft_name):
+		draft_name = None
 	if draft_name:
 		closing = frappe.get_doc("POS Closing Entry", draft_name)
 	else:
 		closing = make_closing_entry_from_opening(opening)
 		closing.centy_pos_client_request_id = client_request_id
+
+	for row in list(closing.get("pos_transactions") or []):
+		inv = (getattr(row, "pos_invoice", None) or getattr(row, "reference_name", None) or "").strip()
+		dt = (getattr(row, "reference_doctype", None) or "POS Invoice").strip()
+		if inv and not frappe.db.exists(dt, inv):
+			closing.remove(row)
+	for row in list(closing.get("payment_reconciliation") or []):
+		ref = (getattr(row, "reference_name", None) or "").strip()
+		if ref and not frappe.db.exists("POS Invoice", ref) and not frappe.db.exists("POS Closing Entry", ref):
+			if hasattr(row, "reference_name"):
+				row.reference_name = None
 
 	by_mop = {r.get("mode_of_payment"): flt(r.get("closing_amount")) for r in (closing_balances or [])}
 	for row in closing.payment_reconciliation or []:
